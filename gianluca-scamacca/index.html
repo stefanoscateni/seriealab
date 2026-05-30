@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gianluca Scamacca — Statistiche e Valore di Mercato Serie A 2025-26</title>
+<meta name="description" content="Gianluca Scamacca, Attaccante del Atalanta, Serie A 2025-26: 10 goal, 1 assist, 0.68 goal/90'. Valore di mercato stimato: €30.0M.">
+<link rel="canonical" href="https://serieaanalyticslab.com/giocatori/gianluca-scamacca/">
+<meta property="og:title" content="Gianluca Scamacca — Statistiche e Valore di Mercato Serie A 2025-26">
+<meta property="og:description" content="Gianluca Scamacca, Attaccante del Atalanta, Serie A 2025-26: 10 goal, 1 assist, 0.68 goal/90'. Valore di mercato stimato: €30.0M.">
+<meta property="og:type" content="profile">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Gianluca Scamacca", "jobTitle": "Attaccante", "memberOf": {"@type": "SportsTeam", "name": "Atalanta", "sport": "Soccer"}, "nationality": "ITA", "birthDate": "1999"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{--bg:#080a0f;--bg2:#0f1218;--bg3:#161b24;--bg4:#1e2430;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--text:#e2e8f0;--muted:#64748b;--faint:#334155;--green:#10b981;--orange:#f97316;--gold:#f59e0b;--red:#ef4444;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;--r:10px;--r2:16px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.6;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(8,10,15,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--display);font-size:20px;letter-spacing:1px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;background:var(--green);border-radius:50%;flex-shrink:0}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:var(--muted);font-family:var(--body);font-size:13px;font-weight:500;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all .15s;text-decoration:none}
+.nav-links a:hover{color:var(--text);background:var(--bg3)}
+.nav-links a.active{color:var(--green);background:rgba(16,185,129,0.08)}
+.page{max-width:1200px;margin:0 auto;padding:36px 28px 80px}
+.hero{padding:44px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.hero-eye{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.hero-title{font-family:var(--display);font-size:clamp(48px,7vw,88px);line-height:.95;letter-spacing:1px}
+.hero-title em{color:var(--green);font-style:normal}
+.hero-sub{margin-top:14px;color:var(--muted);font-size:15px;max-width:500px;font-weight:300}
+.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+.sh-title{font-family:var(--display);font-size:28px;letter-spacing:.5px}
+.sh-sub{font-size:12px;color:var(--muted);font-weight:500}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:32px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;transition:border-color .2s}
+.kpi:hover{border-color:var(--border2)}
+.kpi-lbl{font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-val{font-family:var(--display);font-size:38px;line-height:1}
+.kpi-val.g{color:var(--green)}.kpi-val.gold{color:var(--gold)}
+.kpi-sub{font-size:11px;color:var(--faint);margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.panel-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.panel-body{padding:18px 20px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.bar-row:last-child{margin-bottom:0}
+.bar-lbl{font-size:12px;color:var(--text);min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-val{font-size:12px;font-weight:600;min-width:36px;text-align:right}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:28px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;position:relative;overflow:hidden;transition:all .2s;text-decoration:none;display:block;color:var(--text)}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--green);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.card:hover{border-color:var(--border2);transform:translateY(-2px)}.card:hover::after{transform:scaleX(1)}
+.card-num{font-family:var(--display);font-size:56px;color:var(--border2);position:absolute;top:8px;right:14px;line-height:1}
+.card-name{font-weight:600;font-size:15px;margin-bottom:3px;padding-right:50px}
+.card-meta{font-size:12px;color:var(--muted);margin-bottom:14px}
+.card-stats{display:flex;gap:18px}
+.cs-val{font-family:var(--display);font-size:24px;line-height:1}
+.cs-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
+.badge-fw{background:rgba(249,115,22,.12);color:var(--orange)}.badge-mf{background:rgba(16,185,129,.1);color:var(--green)}.badge-df{background:rgba(245,158,11,.1);color:var(--gold)}.badge-gk{background:rgba(100,116,139,.12);color:var(--muted)}
+.tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:28px}
+.tbl-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.tbl-top-title{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.tbl-controls{display:flex;gap:8px;flex-wrap:wrap}
+.srch{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px 12px;font-family:var(--body);font-size:13px;outline:none;transition:border-color .15s}
+.srch:focus{border-color:var(--green)}.srch::placeholder{color:var(--muted)}
+.tbl-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:9px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+th:hover{color:var(--text)}.si{opacity:.35;margin-left:2px;font-size:10px}.sorted .si{opacity:1;color:var(--green)}
+td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px;white-space:nowrap;vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)}
+.td-rk{color:var(--faint);font-size:12px;width:32px}.td-name{font-weight:600}.td-muted{color:var(--muted)}.td-green{color:var(--green);font-weight:600}.td-gold{color:var(--gold);font-family:var(--display);font-size:16px}.td-orange{color:var(--orange)}
+.fp-group{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.fp{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-family:var(--body);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.fp:hover{color:var(--text);border-color:var(--border2)}.fp.on{color:var(--green);background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.25)}
+.count-bar{padding:10px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+.chart-wrap{position:relative;height:280px}
+footer{border-top:1px solid var(--border);padding:22px 28px;text-align:center;font-size:12px;color:var(--faint)}
+footer span{color:var(--green)}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid}
+.pill-up{color:var(--green);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)}
+.pill-dn{color:var(--red);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08)}
+.pill-eq{color:var(--muted);border-color:var(--border)}
+@media(max-width:700px){.two{grid-template-columns:1fr}.page{padding:20px 16px 60px}.hero-title{font-size:52px}.kpi-strip{grid-template-columns:repeat(2,1fr)}td,th{padding:8px 10px}}
+
+.ph{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.pn{font-family:var(--display);font-size:clamp(40px,6vw,72px);line-height:.95;letter-spacing:1px;margin-bottom:10px}
+.ptags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pinfo{display:flex;gap:20px;flex-wrap:wrap}
+.pi .pil{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.pi .piv{font-size:14px;font-weight:500}
+.pmv{text-align:right}
+.mv-n{font-family:var(--display);font-size:52px;color:var(--gold);line-height:1}
+.mv-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.mv-r{font-size:12px;color:var(--muted);margin-top:2px}
+.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:28px}
+.sb{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center;transition:border-color .2s}
+.sb:hover{border-color:var(--border2)}
+.sb .v{font-family:var(--display);font-size:36px;line-height:1;margin-bottom:3px}
+.sb .l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.sb .s{font-size:11px;color:var(--faint);margin-top:2px}
+.pr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.pl{font-size:12px;color:var(--muted);min-width:110px}
+.pt{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px}
+.pn2{font-size:12px;font-weight:700;min-width:34px;text-align:right}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:28px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;text-decoration:none;color:var(--text);display:block;transition:all .2s}
+.sc:hover{border-color:var(--green);transform:translateY(-2px)}
+.sc .sp{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.sc .sn{font-weight:700;font-size:14px;margin-bottom:2px}
+.sc .sm{font-size:11px;color:var(--muted);margin-bottom:10px}
+.sc .ss{display:flex;gap:14px}
+.sc .sv .v{font-family:var(--display);font-size:20px;line-height:1}
+.sc .sv .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.ins{padding:11px 14px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--green);font-size:13px;line-height:1.65;margin-bottom:8px}
+.ins:last-child{margin-bottom:0}
+.radar-wrap{position:relative;height:260px}
+.bkbtn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;text-decoration:none;padding:6px 0;margin-bottom:6px;transition:color .15s}
+.bkbtn:hover{color:var(--green)}
+@media(max-width:700px){.ph{grid-template-columns:1fr}.pmv{text-align:left}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="/"><div class="logo-dot"></div>SERIE A LAB</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/squadre/">Squadre</a>
+    <a href="/giocatori/" class="active">Giocatori</a>
+    <a href="/scout/">Scout</a>
+  </div>
+</nav>
+<div class="page">
+  <a class="bkbtn" href="/giocatori/">← Tutti i giocatori</a>
+
+  <div class="ph">
+    <div>
+      <div class="ptags">
+        <span class="badge" style="background:rgba(255,255,255,.06);color:var(--orange);border:1px solid rgba(255,255,255,.1);padding:3px 10px">Attaccante</span>
+        <span class="badge badge-mf" style="padding:3px 10px">Atalanta</span>
+        <span style="font-size:12px;color:var(--muted)">ITA · 1999</span>
+      </div>
+      <h1 class="pn">GIANLUCA SCAMACCA</h1>
+      <div class="pinfo">
+        <div class="pi"><div class="pil">Età</div><div class="piv">26 anni</div></div>
+        <div class="pi"><div class="pil">Presenze</div><div class="piv">24 (16 da titolare)</div></div>
+        <div class="pi"><div class="pil">Minuti</div><div class="piv">1,315'</div></div>
+        <div class="pi"><div class="pil">Stagione</div><div class="piv">2025-26</div></div>
+      </div>
+    </div>
+    <div class="pmv">
+      <div class="mv-n">€30.0M</div>
+      <div class="mv-l">Valore Mercato</div>
+      <div class="mv-r">Range: €25.5M – €34.5M</div>
+    </div>
+  </div>
+
+  <div class="srow">
+    <div class="sb"><div class="v" style="color:var(--green)">10</div><div class="l">Goal</div><div class="s">0.68/90'</div></div>
+    <div class="sb"><div class="v" style="color:var(--orange)">1</div><div class="l">Assist</div><div class="s">0.07/90'</div></div>
+    <div class="sb"><div class="v" style="color:var(--gold)">11</div><div class="l">G+A</div><div class="s">0.75/90'</div></div>
+    <div class="sb"><div class="v">8</div><div class="l">No-pen G</div><div class="s">2 rig.</div></div>
+    <div class="sb"><div class="v">2</div><div class="l">Gialli</div><div class="s">0 rossi</div></div>
+    <div class="sb"><div class="v" style="color:var(--green)">14.6</div><div class="l">90'</div><div class="s">equiv.</div></div>
+  </div>
+
+  <div class="two">
+    <div class="panel">
+      <div class="panel-head">Radar — vs FW in lega</div>
+      <div class="panel-body"><div class="radar-wrap"><canvas id="radar" role="img" aria-label="Radar Gianluca Scamacca Serie A 2025-26"></canvas></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">Percentili — vs FW (37 giocatori)</div>
+      <div class="panel-body" style="padding-top:22px">
+        <div class="pr"><div class="pl">Goal/90'</div><div class="pt"><div class="pf" style="width:95%;background:var(--green)"></div></div><div class="pn2" style="color:var(--green)">95°</div></div><div class="pr"><div class="pl">Assist/90'</div><div class="pt"><div class="pf" style="width:27%;background:var(--orange)"></div></div><div class="pn2" style="color:var(--orange)">27°</div></div><div class="pr"><div class="pl">G+A/90'</div><div class="pt"><div class="pf" style="width:92%;background:var(--gold)"></div></div><div class="pn2" style="color:var(--gold)">92°</div></div><div class="pr"><div class="pl">Continuità</div><div class="pt"><div class="pf" style="width:24%;background:var(--green)"></div></div><div class="pn2" style="color:var(--green)">24°</div></div><div class="pr"><div class="pl">Valore</div><div class="pt"><div class="pf" style="width:78%;background:var(--gold)"></div></div><div class="pn2" style="color:var(--gold)">78°</div></div>
+        <div style="margin-top:14px;font-size:11px;color:var(--muted);line-height:1.6">Percentili rispetto agli altri <strong style="color:var(--text)">FW</strong> con almeno 3 presenze in Serie A 2025-26.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="sh-title">Giocatori Simili</div><div class="sh-sub">stesso ruolo · similarità statistica</div></div>
+  <div class="sg"><a class="sc" href="/giocatori/dusan-vlahovic/"><div class="sp">Sim. 100%</div><div class="sn">Dusan Vlahovic</div><div class="sm">Juventus · 25a · <span class="badge badge-fw">FW</span></div><div class="ss"><div class="sv"><div class="v" style="color:var(--green)">7</div><div class="l">Goal</div></div><div class="sv"><div class="v">1</div><div class="l">Assist</div></div><div class="sv"><div class="v" style="color:var(--gold)">€30.0M</div><div class="l">Valore</div></div></div></a><a class="sc" href="/giocatori/donyell-malen/"><div class="sp">Sim. 99%</div><div class="sn">Donyell Malen</div><div class="sm">Roma · 26a · <span class="badge badge-fw">FW</span></div><div class="ss"><div class="sv"><div class="v" style="color:var(--green)">14</div><div class="l">Goal</div></div><div class="sv"><div class="v">2</div><div class="l">Assist</div></div><div class="sv"><div class="v" style="color:var(--gold)">€36.0M</div><div class="l">Valore</div></div></div></a><a class="sc" href="/giocatori/caleb-ekuban/"><div class="sp">Sim. 98%</div><div class="sn">Caleb Ekuban</div><div class="sm">Genoa · 31a · <span class="badge badge-fw">FW</span></div><div class="ss"><div class="sv"><div class="v" style="color:var(--green)">4</div><div class="l">Goal</div></div><div class="sv"><div class="v">1</div><div class="l">Assist</div></div><div class="sv"><div class="v" style="color:var(--gold)">€7.0M</div><div class="l">Valore</div></div></div></a><a class="sc" href="/giocatori/christopher-nkunku/"><div class="sp">Sim. 96%</div><div class="sn">Christopher Nkunku</div><div class="sm">Milan · 27a · <span class="badge badge-fw">FW</span></div><div class="ss"><div class="sv"><div class="v" style="color:var(--green)">7</div><div class="l">Goal</div></div><div class="sv"><div class="v">3</div><div class="l">Assist</div></div><div class="sv"><div class="v" style="color:var(--gold)">€20.0M</div><div class="l">Valore</div></div></div></a><a class="sc" href="/giocatori/anastasios-douvikas/"><div class="sp">Sim. 96%</div><div class="sn">Anastasios Douvikas</div><div class="sm">Como · 25a · <span class="badge badge-fw">FW</span></div><div class="ss"><div class="sv"><div class="v" style="color:var(--green)">14</div><div class="l">Goal</div></div><div class="sv"><div class="v">1</div><div class="l">Assist</div></div><div class="sv"><div class="v" style="color:var(--gold)">€18.0M</div><div class="l">Valore</div></div></div></a></div>
+
+  <div class="sh"><div class="sh-title">Analisi</div></div>
+  <div class="panel" style="margin-bottom:32px">
+    <div class="panel-body"><div class="ins">⚽ Segna <strong>1.8x</strong> la media dei FW in Serie A per goal/90'.</div></div>
+  </div>
+
+  <div style="padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:28px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Esplora</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="/giocatori/" style="color:var(--green);font-size:13px;font-weight:500;text-decoration:none">← Tutti i giocatori</a>
+      <a href="/scout/" style="color:var(--muted);font-size:13px;font-weight:500;text-decoration:none">Scout Tool →</a>
+      <a href="/squadre/" style="color:var(--muted);font-size:13px;font-weight:500;text-decoration:none">Squadre →</a>
+    </div>
+  </div>
+</div>
+<footer><span>Serie A Analytics Lab</span> · Dati FBref 2025-26 · Valori mercato ispirati a Transfermarkt</footer>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const ctx=document.getElementById('radar');
+  new Chart(ctx,{type:'radar',data:{
+    labels:['Gol/90','Assist/90','G+A/90','Continuità','Impatto','Valore'],
+    datasets:[{label:'Gianluca Scamacca',data:[95, 27, 92, 24, 65, 78],borderColor:'#f97316',
+      backgroundColor:'#f9731626',borderWidth:2,pointBackgroundColor:'#f97316',pointRadius:4}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(255,255,255,0.06)'},
+      angleLines:{color:'rgba(255,255,255,0.06)'},pointLabels:{color:'#64748b',font:{size:12,family:"'DM Sans',sans-serif"}}}}}
+  });
+});
+</script>
+</body></html>
