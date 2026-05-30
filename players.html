@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giocatori — Serie A Analytics Lab</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SERIE A <span>LAB</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="teams.html">Squadre</a>
+    <a href="players.html" class="active">Giocatori</a>
+    <a href="scout.html">Scout</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="hero fade-up">
+    <div class="hero-label">Database Giocatori</div>
+    <h1>122 <em>GIOCATORI</em></h1>
+    <p class="hero-sub">Statistiche complete, xG, performance per 90' e valore di mercato stimato (modello Transfermarkt-ispirato).</p>
+  </div>
+
+  <!-- Metriche sommario -->
+  <div class="metrics-grid fade-up-2" id="player-metrics"></div>
+
+  <!-- Top card per categoria -->
+  <div class="two-col fade-up-3">
+    <div class="panel">
+      <div class="panel-title">🥇 Top 5 Goleador</div>
+      <div class="panel-body" id="top-goleador"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">🤝 Top 5 Assistman</div>
+      <div class="panel-body" id="top-assistman"></div>
+    </div>
+  </div>
+
+  <!-- Tabella completa -->
+  <div class="section-title" style="margin-top:8px">Tutti i Giocatori <span>122 presenti nel dataset</span></div>
+  <div class="table-wrap fade-up-4">
+    <div class="table-header-bar">
+      <h3>Database 2025-26</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select class="search-input" id="filter-pos" style="width:auto" onchange="applyFilters()">
+          <option value="">Tutti i ruoli</option>
+          <option value="FW">Attaccanti</option>
+          <option value="MF">Centrocampisti</option>
+          <option value="DF">Difensori</option>
+          <option value="GK">Portieri</option>
+        </select>
+        <select class="search-input" id="filter-squad" style="width:auto" onchange="applyFilters()">
+          <option value="">Tutte le squadre</option>
+        </select>
+        <input class="search-input" id="search-player" type="text" placeholder="Cerca giocatore..." oninput="applyFilters()">
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table id="players-table">
+        <thead>
+          <tr>
+            <th class="td-rank">#</th>
+            <th data-col="name">Giocatore <span class="sort-icon"></span></th>
+            <th data-col="squad">Squadra <span class="sort-icon"></span></th>
+            <th data-col="position">Ruolo <span class="sort-icon"></span></th>
+            <th data-col="age">Età <span class="sort-icon"></span></th>
+            <th data-col="goals">G <span class="sort-icon"></span></th>
+            <th data-col="assists">A <span class="sort-icon"></span></th>
+            <th data-col="goals_pg">G/90 <span class="sort-icon"></span></th>
+            <th data-col="assists_pg">A/90 <span class="sort-icon"></span></th>
+            <th data-col="minutes">Min <span class="sort-icon"></span></th>
+            <th data-col="market_value_m">Valore <span class="sort-icon"></span></th>
+          </tr>
+        </thead>
+        <tbody id="players-tbody"></tbody>
+      </table>
+    </div>
+    <div style="padding:12px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)" id="count-label"></div>
+  </div>
+
+</div>
+
+<footer><span>Serie A Analytics Lab</span> · Stagione 2025-26</footer>
+
+<script src="../js/utils.js"></script>
+<script>
+let allPlayers = [];
+let filtered = [];
+
+function renderTable(data) {
+  document.getElementById('players-tbody').innerHTML = data.map((p, i) => `
+    <tr>
+      <td class="td-rank">${i+1}</td>
+      <td class="td-name"><a href="player.html?id=${p.id}" style="color:var(--text);text-decoration:none;font-weight:600;transition:color 0.15s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">${p.name}</a></td>
+      <td class="td-squad" style="font-size:12px">${p.squad}</td>
+      <td>${posBadge(p.position)}</td>
+      <td>${p.age}</td>
+      <td><strong>${p.goals}</strong></td>
+      <td>${p.assists}</td>
+      <td style="color:var(--accent)">${p.goals_pg.toFixed(2)}</td>
+      <td>${p.assists_pg.toFixed(2)}</td>
+      <td style="color:var(--muted)">${p.minutes.toLocaleString()}'</td>
+      <td class="mv-badge">${fmtM(p.market_value_m)}</td>
+    </tr>
+  `).join('');
+  document.getElementById('count-label').textContent = `${data.length} giocatori`;
+}
+
+function applyFilters() {
+  const q = document.getElementById('search-player').value.toLowerCase();
+  const pos = document.getElementById('filter-pos').value;
+  const squad = document.getElementById('filter-squad').value;
+  filtered = allPlayers.filter(p =>
+    (!q || p.name.toLowerCase().includes(q) || p.squad.toLowerCase().includes(q)) &&
+    (!pos || p.position.includes(pos)) &&
+    (!squad || p.squad === squad)
+  );
+  renderTable(filtered);
+}
+
+function renderMiniList(players, containerId, statKey, label, color) {
+  const top = [...players].filter(p => p[statKey] > 0).sort((a,b) => b[statKey] - a[statKey]).slice(0, 5);
+  const max = top[0]?.[statKey] || 1;
+  document.getElementById(containerId).innerHTML = top.map((p, i) => `
+    <div class="bar-row" style="margin-bottom:12px">
+      <div style="flex:1">
+        <div style="font-weight:${i===0?'600':'400'};font-size:13px;margin-bottom:2px">${p.name}</div>
+        <div style="font-size:11px;color:var(--muted)">${p.squad} · ${posBadge(p.position)}</div>
+      </div>
+      <div style="color:${color};font-family:var(--font-display);font-size:20px;min-width:32px;text-align:right">${p[statKey]}</div>
+    </div>
+  `).join('');
+}
+
+async function init() {
+  const { players } = await loadData();
+  allPlayers = [...players].sort((a,b) => b.goals - a.goals);
+  filtered = [...allPlayers];
+
+  // Popola filtro squadre
+  const squads = [...new Set(players.map(p => p.squad))].sort();
+  const sel = document.getElementById('filter-squad');
+  squads.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sel.appendChild(opt);
+  });
+
+  // Metriche
+  const topScorer = allPlayers[0];
+  const topAssist = [...players].sort((a,b) => b.assists - a.assists)[0];
+  const topValue  = [...players].sort((a,b) => b.market_value_m - a.market_value_m)[0];
+  const avgAge    = (players.reduce((s,p) => s+p.age, 0) / players.length).toFixed(1);
+  const totalGoals= players.reduce((s,p) => s+p.goals, 0);
+  const nations   = new Set(players.map(p => p.nationality)).size;
+
+  document.getElementById('player-metrics').innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Top Scorer</div>
+      <div class="metric-value" style="font-size:16px;font-family:var(--font-body);font-weight:700">${topScorer.name}</div>
+      <div class="metric-sub">${topScorer.goals} goal · ${topScorer.squad}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Top Assist</div>
+      <div class="metric-value" style="font-size:16px;font-family:var(--font-body);font-weight:700">${topAssist.name}</div>
+      <div class="metric-sub">${topAssist.assists} assist · ${topAssist.squad}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Giocatori</div>
+      <div class="metric-value accent">122</div>
+      <div class="metric-sub">${nations} nazionalità</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Goal Totali</div>
+      <div class="metric-value">${totalGoals}</div>
+      <div class="metric-sub">da 122 giocatori</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Età Media</div>
+      <div class="metric-value">${avgAge}</div>
+      <div class="metric-sub">anni</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Top Valore</div>
+      <div class="metric-value" style="font-size:16px;font-family:var(--font-body);font-weight:700;color:var(--gold)">${fmtM(topValue.market_value_m)}</div>
+      <div class="metric-sub">${topValue.name}</div>
+    </div>
+  `;
+
+  renderMiniList(players, 'top-goleador', 'goals', 'Goal', 'var(--accent)');
+  renderMiniList(players, 'top-assistman', 'assists', 'Assist', 'var(--accent2)');
+  renderTable(filtered);
+  makeSortable('players-table', allPlayers, (sorted) => { filtered = sorted; renderTable(sorted); });
+}
+
+init();
+</script>
+</body>
+</html>

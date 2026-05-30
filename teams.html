@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Squadre — Serie A Analytics Lab</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SERIE A <span>LAB</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="teams.html" class="active">Squadre</a>
+    <a href="players.html">Giocatori</a>
+    <a href="scout.html">Scout</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="hero fade-up">
+    <div class="hero-label">Analisi Squadre</div>
+    <h1>LE <em>20 SQUADRE</em></h1>
+    <p class="hero-sub">Statistiche complete, xG, possesso e overperformance per tutte le squadre della Serie A 2025-26.</p>
+  </div>
+
+  <!-- Filtri rapidi -->
+  <div class="fade-up-2" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px" id="filter-btns">
+    <button class="filter-btn active" data-sort="goals">Goal ↓</button>
+    <button class="filter-btn" data-sort="possession">Possesso ↓</button>
+    <button class="filter-btn" data-sort="xg_pg">xG/90 ↓</button>
+    <button class="filter-btn" data-sort="overperformance">Overperf ↓</button>
+    <button class="filter-btn" data-sort="avg_age">Età ↑</button>
+  </div>
+
+  <!-- Cards squadre -->
+  <div class="cards-grid fade-up-3" id="teams-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+    <div class="loader">Caricamento squadre...</div>
+  </div>
+
+  <!-- Tabella confronto -->
+  <div class="section-title fade-up-4">Tabella Confronto <span>tutte le statistiche</span></div>
+  <div class="table-wrap fade-up-4">
+    <div class="table-header-bar">
+      <h3>Statistiche squadre 2025-26</h3>
+      <input class="search-input" id="search-team" type="text" placeholder="Cerca squadra..." oninput="filterTeams()">
+    </div>
+    <div style="overflow-x:auto">
+      <table id="teams-table">
+        <thead>
+          <tr>
+            <th class="td-rank">#</th>
+            <th data-col="name">Squadra <span class="sort-icon"></span></th>
+            <th data-col="goals">G <span class="sort-icon"></span></th>
+            <th data-col="assists">A <span class="sort-icon"></span></th>
+            <th data-col="shots">Tiri <span class="sort-icon"></span></th>
+            <th data-col="possession">Poss% <span class="sort-icon"></span></th>
+            <th data-col="xg_pg">xG/90 <span class="sort-icon"></span></th>
+            <th data-col="npxg_pg">npxG <span class="sort-icon"></span></th>
+            <th data-col="overperformance">OvPerf <span class="sort-icon"></span></th>
+            <th data-col="avg_age">Età <span class="sort-icon"></span></th>
+            <th data-col="yellowCards">GC <span class="sort-icon"></span></th>
+          </tr>
+        </thead>
+        <tbody id="teams-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer><span>Serie A Analytics Lab</span> · Stagione 2025-26</footer>
+
+<style>
+.filter-btn {
+  background: var(--bg2); border: 1px solid var(--border); color: var(--muted);
+  padding: 6px 14px; border-radius: 20px; font-family: var(--font-body);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--border2); }
+.filter-btn.active { background: rgba(0,212,170,0.12); color: var(--accent); border-color: rgba(0,212,170,0.3); }
+.overperf-pos { color: var(--up); font-weight: 600; }
+.overperf-neg { color: var(--down); font-weight: 600; }
+</style>
+
+<script src="../js/utils.js"></script>
+<script>
+let allTeams = [];
+
+function renderGrid(teams) {
+  const byGoals = [...teams].sort((a,b) => b.goals - a.goals);
+  document.getElementById('teams-grid').innerHTML = teams.map((t, idx) => {
+    const rank = byGoals.findIndex(x => x.id === t.id) + 1;
+    const overCls = t.overperformance > 0.05 ? 'up' : t.overperformance < -0.05 ? 'down' : 'neutral';
+    return `
+    <div class="card" style="animation:fadeUp 0.3s ${idx*0.04}s ease both">
+      <div class="card-rank">${rank}</div>
+      <div class="card-name">${t.name}</div>
+      <div class="card-meta">Età media ${t.avg_age} · Possesso ${t.possession}% · ${t.players} giocatori</div>
+      <div class="card-stats" style="margin-bottom:12px">
+        <div class="stat-item"><div class="stat-val">${t.goals}</div><div class="stat-lbl">Goal</div></div>
+        <div class="stat-item"><div class="stat-val">${t.assists}</div><div class="stat-lbl">Assist</div></div>
+        <div class="stat-item"><div class="stat-val">${t.shots}</div><div class="stat-lbl">Tiri</div></div>
+        <div class="stat-item"><div class="stat-val" style="color:var(--accent2)">${t.xg_pg}</div><div class="stat-lbl">xG/90</div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;color:var(--muted)">Overperformance vs xG:</span>
+        <span class="trend ${overCls}">${t.overperformance > 0 ? '+' : ''}${t.overperformance}</span>
+      </div>
+    </div>
+  `}).join('');
+}
+
+function renderTable(teams) {
+  document.getElementById('teams-tbody').innerHTML = teams.map((t, i) => {
+    const overCls = t.overperformance > 0.05 ? 'overperf-pos' : t.overperformance < -0.05 ? 'overperf-neg' : '';
+    return `<tr>
+      <td class="td-rank">${i+1}</td>
+      <td class="td-name">${t.name}</td>
+      <td><strong>${t.goals}</strong></td>
+      <td>${t.assists}</td>
+      <td>${t.shots}</td>
+      <td>${t.possession}%</td>
+      <td style="color:var(--accent2)">${t.xg_pg}</td>
+      <td>${t.npxg_pg}</td>
+      <td class="${overCls}">${t.overperformance > 0 ? '+' : ''}${t.overperformance}</td>
+      <td>${t.avg_age}</td>
+      <td>${t.yellowCards}</td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTeams() {
+  const q = document.getElementById('search-team').value.toLowerCase();
+  const filtered = allTeams.filter(t => t.name.toLowerCase().includes(q));
+  renderTable(filtered);
+}
+
+let currentSort = 'goals';
+
+async function init() {
+  const { teams } = await loadData();
+  allTeams = [...teams].sort((a,b) => b.goals - a.goals);
+  renderGrid(allTeams);
+  renderTable(allTeams);
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const col = btn.dataset.sort;
+      const ascending = col === 'avg_age';
+      allTeams = [...teams].sort((a,b) => ascending ? a[col] - b[col] : b[col] - a[col]);
+      renderGrid(allTeams);
+      renderTable(allTeams);
+    });
+  });
+
+  // Sortable table
+  makeSortable('teams-table', teams, renderTable);
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scout — Serie A Analytics Lab</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SERIE A <span>LAB</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="teams.html">Squadre</a>
+    <a href="players.html">Giocatori</a>
+    <a href="scout.html" class="active">Scout</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="hero fade-up">
+    <div class="hero-label">Scouting Tool</div>
+    <h1>TROVA IL <em>GIOCATORE</em></h1>
+    <p class="hero-sub">Filtra, ordina e scopri i giocatori che corrispondono ai tuoi criteri. Calcola il Fit Score in base a produzione, età e valore.</p>
+  </div>
+
+  <!-- FILTRI -->
+  <div class="panel fade-up-2" style="margin-bottom:24px">
+    <div class="panel-title">🔍 Filtri di Ricerca</div>
+    <div class="panel-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Ruolo</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="pos-filters">
+            <button class="filter-btn active" data-pos="">Tutti</button>
+            <button class="filter-btn" data-pos="FW">Attaccanti</button>
+            <button class="filter-btn" data-pos="MF">Centrocampisti</button>
+            <button class="filter-btn" data-pos="DF">Difensori</button>
+            <button class="filter-btn" data-pos="GK">Portieri</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Età max</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="age-filter" min="17" max="39" value="39" style="flex:1" oninput="document.getElementById('age-val').textContent=this.value+'a';applyScout()">
+            <span id="age-val" style="min-width:30px;font-weight:600;color:var(--accent)">39a</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Goal min</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="goals-filter" min="0" max="17" value="0" oninput="document.getElementById('goals-val').textContent=this.value;applyScout()">
+            <span id="goals-val" style="min-width:20px;font-weight:600;color:var(--accent)">0</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Minuti min</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="min-filter" min="0" max="3000" value="0" step="90" oninput="document.getElementById('min-val').textContent=this.value+\"'\";applyScout()">
+            <span id="min-val" style="min-width:40px;font-weight:600;color:var(--accent)">0'</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Valore max (€M)</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="val-filter" min="1" max="85" value="85" oninput="document.getElementById('val-out').textContent='€'+this.value+'M';applyScout()">
+            <span id="val-out" style="min-width:44px;font-weight:600;color:var(--gold)">€85M</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Ordina per</div>
+          <select class="search-input" id="sort-by" style="width:100%" onchange="applyScout()">
+            <option value="fit_score">Fit Score ↓</option>
+            <option value="goals">Goal ↓</option>
+            <option value="assists">Assist ↓</option>
+            <option value="goals_pg">Goal/90 ↓</option>
+            <option value="market_value_m">Valore ↓</option>
+            <option value="age">Età ↑</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Risultati -->
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
+    <div class="section-title" style="margin-bottom:0">Risultati <span id="result-count">—</span></div>
+    <div style="font-size:12px;color:var(--muted)">Il <strong style="color:var(--accent)">Fit Score</strong> combina produzione, continuità ed efficienza per 90'</div>
+  </div>
+
+  <div class="table-wrap fade-up-3">
+    <div style="overflow-x:auto">
+      <table id="scout-table">
+        <thead>
+          <tr>
+            <th style="width:32px">#</th>
+            <th>Giocatore</th>
+            <th>Squadra</th>
+            <th>Ruolo</th>
+            <th>Età</th>
+            <th>Goal</th>
+            <th>Assist</th>
+            <th>G/90</th>
+            <th>Min</th>
+            <th>Valore</th>
+            <th>Fit Score</th>
+          </tr>
+        </thead>
+        <tbody id="scout-tbody"></tbody>
+      </table>
+    </div>
+    <div style="padding:12px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)" id="scout-count"></div>
+  </div>
+
+</div>
+
+<footer><span>Serie A Analytics Lab</span> · Stagione 2025-26</footer>
+
+<style>
+.filter-btn {
+  background: var(--bg2); border: 1px solid var(--border); color: var(--muted);
+  padding: 5px 12px; border-radius: 20px; font-family: var(--font-body);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--border2); }
+.filter-btn.active { background: rgba(0,212,170,0.12); color: var(--accent); border-color: rgba(0,212,170,0.3); }
+
+.fit-bar {
+  display: flex; align-items: center; gap: 6px;
+}
+.fit-track {
+  width: 60px; height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden;
+}
+.fit-fill {
+  height: 100%; border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+.fit-val { font-weight: 700; font-size: 13px; color: var(--accent); min-width: 28px; }
+</style>
+
+<script src="../js/utils.js"></script>
+<script>
+let allPlayers = [];
+let activePos = '';
+
+function calcFitScore(p) {
+  const n = Math.max(p.nineties, 0.5);
+  const prodScore = (p.goals_pg * 3 + p.assists_pg * 2) * 10;
+  const continuityBonus = Math.min(p.minutes / 2000, 1) * 20;
+  const ageBonus = p.age <= 23 ? 15 : p.age <= 26 ? 8 : p.age <= 29 ? 3 : 0;
+  return Math.min(Math.round(prodScore + continuityBonus + ageBonus), 99);
+}
+
+function applyScout() {
+  const maxAge  = parseInt(document.getElementById('age-filter').value);
+  const minGoals= parseInt(document.getElementById('goals-filter').value);
+  const minMin  = parseInt(document.getElementById('min-filter').value);
+  const maxVal  = parseInt(document.getElementById('val-filter').value);
+  const sortBy  = document.getElementById('sort-by').value;
+
+  let data = allPlayers
+    .filter(p => p.age <= maxAge)
+    .filter(p => p.goals >= minGoals)
+    .filter(p => p.minutes >= minMin)
+    .filter(p => p.market_value_m <= maxVal)
+    .filter(p => !activePos || p.position.includes(activePos));
+
+  // Aggiungi fit score
+  data = data.map(p => ({ ...p, fit_score: calcFitScore(p) }));
+
+  const asc = sortBy === 'age';
+  data.sort((a,b) => asc ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy]);
+
+  document.getElementById('result-count').textContent = data.length + ' trovati';
+  document.getElementById('scout-count').textContent = `${data.length} giocatori corrispondono ai filtri`;
+
+  document.getElementById('scout-tbody').innerHTML = data.map((p, i) => `
+    <tr>
+      <td style="color:var(--muted);font-size:12px">${i+1}</td>
+      <td style="font-weight:600"><a href="player.html?id=${p.id}" style="color:var(--text);text-decoration:none;transition:color 0.15s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">${p.name}</a></td>
+      <td style="font-size:12px;color:var(--muted)">${p.squad}</td>
+      <td>${posBadge(p.position)}</td>
+      <td>${p.age}</td>
+      <td><strong style="color:${p.goals>0?'var(--text)':'var(--muted)'}">${p.goals}</strong></td>
+      <td>${p.assists}</td>
+      <td style="color:var(--accent)">${p.goals_pg.toFixed(2)}</td>
+      <td style="color:var(--muted)">${p.minutes.toLocaleString()}'</td>
+      <td style="color:var(--gold);font-family:var(--font-display);font-size:15px">${fmtM(p.market_value_m)}</td>
+      <td>
+        <div class="fit-bar">
+          <div class="fit-track"><div class="fit-fill" style="width:${p.fit_score}%"></div></div>
+          <span class="fit-val">${p.fit_score}</span>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function init() {
+  const { players } = await loadData();
+  allPlayers = players;
+  applyScout();
+
+  // Pos filter buttons
+  document.querySelectorAll('#pos-filters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#pos-filters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activePos = btn.dataset.pos;
+      applyScout();
+    });
+  });
+}
+
+init();
+</script>
+</body>
+</html>

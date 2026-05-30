@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profilo Giocatore — Serie A Analytics Lab</title>
+<link rel="stylesheet" href="../css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+<style>
+/* ── PLAYER HEADER ─────────────────────────────────── */
+.player-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.player-number {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 14vw, 160px);
+  line-height: 1;
+  color: var(--border2);
+  position: absolute;
+  right: 0; top: 0;
+  pointer-events: none;
+  user-select: none;
+}
+.player-meta-top {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap;
+}
+.player-name {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.player-info {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;
+}
+.info-item { }
+.info-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.info-val { font-size: 15px; font-weight: 600; color: var(--text); }
+
+/* ── STAT BLOCKS ──────────────────────────────────── */
+.stat-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.stat-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.stat-block:hover { border-color: var(--border2); }
+.stat-block .val {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-block .lbl { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.stat-block .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ── TWO-COL LAYOUT ───────────────────────────────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+@media (max-width: 720px) { .profile-grid { grid-template-columns: 1fr; } }
+
+/* ── RADAR ────────────────────────────────────────── */
+.radar-wrap { position: relative; height: 280px; display: flex; align-items: center; justify-content: center; }
+
+/* ── PERCENTILE BARS ──────────────────────────────── */
+.pct-row {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.pct-label { font-size: 12px; color: var(--muted); min-width: 100px; }
+.pct-track {
+  flex: 1; height: 6px; background: var(--bg3);
+  border-radius: 3px; overflow: hidden; position: relative;
+}
+.pct-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+.pct-val { font-size: 12px; font-weight: 700; min-width: 36px; text-align: right; }
+
+/* ── SIMILAR PLAYERS ──────────────────────────────── */
+.similar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.similar-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: block;
+  color: var(--text);
+}
+.similar-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.sim-score {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.sim-name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.sim-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.sim-stats { display: flex; gap: 14px; }
+.sim-stat .v { font-family: var(--font-display); font-size: 18px; line-height: 1; }
+.sim-stat .l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── MARKET VALUE BOX ─────────────────────────────── */
+.mv-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.mv-box::before {
+  content: '€';
+  font-family: var(--font-display);
+  font-size: 200px;
+  color: rgba(245,158,11,0.04);
+  position: absolute;
+  left: -10px; top: -40px;
+  line-height: 1;
+  pointer-events: none;
+}
+.mv-val {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 72px);
+  color: var(--gold);
+  line-height: 1;
+  position: relative;
+}
+.mv-range { font-size: 13px; color: var(--muted); margin-top: 6px; position: relative; }
+
+/* ── BACK LINK ────────────────────────────────────── */
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted); font-size: 13px; text-decoration: none;
+  padding: 6px 0; margin-bottom: 8px; transition: color 0.15s;
+}
+.back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">SERIE A <span>LAB</span></a>
+  <div class="nav-links">
+    <a href="../index.html">Home</a>
+    <a href="teams.html">Squadre</a>
+    <a href="players.html">Giocatori</a>
+    <a href="scout.html">Scout</a>
+  </div>
+</nav>
+
+<div class="page" id="main-content">
+  <div class="loader" id="loader">Caricamento profilo...</div>
+</div>
+
+<footer><span>Serie A Analytics Lab</span> · Stagione 2025-26</footer>
+
+<script src="../js/utils.js"></script>
+<script>
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function pct(val, arr) {
+  const below = arr.filter(v => v <= val).length;
+  return Math.round(below / arr.length * 100);
+}
+
+function posColor(pos) {
+  if (pos.includes('FW')) return 'var(--accent2)';
+  if (pos.includes('MF')) return 'var(--accent)';
+  if (pos.includes('DF')) return 'var(--gold)';
+  return 'var(--muted)';
+}
+
+function radarColor(pos) {
+  if (pos.includes('FW')) return { border: '#ff6b35', bg: 'rgba(255,107,53,0.15)' };
+  if (pos.includes('MF')) return { border: '#00d4aa', bg: 'rgba(0,212,170,0.15)' };
+  if (pos.includes('DF')) return { border: '#f59e0b', bg: 'rgba(245,158,11,0.15)' };
+  return { border: '#6b7280', bg: 'rgba(107,114,128,0.15)' };
+}
+
+// ── SIMILARITY ENGINE ────────────────────────────────────────────────────────
+// Vettore normalizzato: [goals_pg, assists_pg, ga_pg, nineties_norm, age_norm, market_norm]
+function playerVector(p, maxG, maxA, maxGA, maxN, maxMV) {
+  return [
+    p.goals_pg / maxG,
+    p.assists_pg / maxA,
+    p.ga_pg / maxGA,
+    p.nineties / maxN,
+    (40 - p.age) / 23,         // età inversa: più giovane = più simile a giovani
+    p.market_value_m / maxMV
+  ];
+}
+
+function cosineSim(a, b) {
+  let dot = 0, normA = 0, normB = 0;
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
+  }
+  if (!normA || !normB) return 0;
+  return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+
+function findSimilar(target, players, n = 5) {
+  const firstPos = target.position.split(',')[0].trim();
+  // Usa stesso gruppo di posizione
+  const pool = players.filter(p =>
+    p.id !== target.id &&
+    p.position.includes(firstPos) &&
+    p.nineties >= 5
+  );
+  if (!pool.length) return [];
+
+  const allG  = players.map(p => p.goals_pg);
+  const allA  = players.map(p => p.assists_pg);
+  const allGA = players.map(p => p.ga_pg);
+  const allN  = players.map(p => p.nineties);
+  const allMV = players.map(p => p.market_value_m);
+
+  const maxG  = Math.max(...allG)  || 1;
+  const maxA  = Math.max(...allA)  || 1;
+  const maxGA = Math.max(...allGA) || 1;
+  const maxN  = Math.max(...allN)  || 1;
+  const maxMV = Math.max(...allMV) || 1;
+
+  const tVec = playerVector(target, maxG, maxA, maxGA, maxN, maxMV);
+
+  return pool
+    .map(p => ({
+      ...p,
+      similarity: Math.round(cosineSim(tVec, playerVector(p, maxG, maxA, maxGA, maxN, maxMV)) * 100)
+    }))
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, n);
+}
+
+// ── PERCENTILI PER POSIZIONE ──────────────────────────────────────────────────
+function calcPercentiles(player, players) {
+  const firstPos = player.position.split(',')[0].trim();
+  const pool = players.filter(p => p.position.includes(firstPos) && p.nineties >= 3);
+
+  if (firstPos === 'GK') {
+    return [
+      { label: 'Minuti giocati', val: pct(player.nineties, pool.map(p => p.nineties)), color: 'var(--accent)' },
+      { label: 'Presenze',       val: pct(player.mp, pool.map(p => p.mp)),             color: 'var(--accent)' },
+    ];
+  }
+
+  const base = [
+    { label: 'Goal / 90\'',   val: pct(player.goals_pg,   pool.map(p => p.goals_pg)),   color: 'var(--accent2)' },
+    { label: 'Assist / 90\'', val: pct(player.assists_pg, pool.map(p => p.assists_pg)), color: 'var(--accent)' },
+    { label: 'G+A / 90\'',    val: pct(player.ga_pg,      pool.map(p => p.ga_pg)),      color: 'var(--gold)' },
+    { label: 'Continuità',    val: pct(player.nineties,   pool.map(p => p.nineties)),   color: 'var(--accent)' },
+    { label: 'Valore mercato',val: pct(player.market_value_m, pool.map(p => p.market_value_m)), color: 'var(--gold)' },
+  ];
+
+  if (firstPos === 'DF') {
+    base.push({ label: 'Goal da DF',    val: pct(player.goals_pg,   pool.map(p => p.goals_pg)),   color: 'var(--accent2)' });
+    base.push({ label: 'Assist da DF',  val: pct(player.assists_pg, pool.map(p => p.assists_pg)), color: 'var(--accent)' });
+  }
+  return base;
+}
+
+// ── RADAR DATA ────────────────────────────────────────────────────────────────
+function buildRadarData(player, players) {
+  const firstPos = player.position.split(',')[0].trim();
+  const pool = players.filter(p => p.position.includes(firstPos) && p.nineties >= 3);
+
+  const labels = ['Gol/90', 'Assist/90', 'G+A/90', 'Continuità', 'Impatto', 'Valore'];
+
+  const pctGoal  = pct(player.goals_pg,   pool.map(p => p.goals_pg));
+  const pctAst   = pct(player.assists_pg, pool.map(p => p.assists_pg));
+  const pctGA    = pct(player.ga_pg,      pool.map(p => p.ga_pg));
+  const pctCont  = pct(player.nineties,   pool.map(p => p.nineties));
+  const pctMV    = pct(player.market_value_m, pool.map(p => p.market_value_m));
+  // "Impatto" = percentile di (goal + assist) totali
+  const pctTot   = pct(player.ga, pool.map(p => p.ga));
+
+  return { labels, data: [pctGoal, pctAst, pctGA, pctCont, pctTot, pctMV] };
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+async function init() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const { players } = await loadData();
+
+  const player = id ? players.find(p => p.id === id) : null;
+
+  // Fallback: se nessun ID, usa Lautaro come demo
+  const p = player || players.find(x => x.name === 'Lautaro Martinez') || players[0];
+
+  document.title = `${p.name} — Serie A Analytics Lab`;
+
+  const pColor = posColor(p.position);
+  const similar = findSimilar(p, players);
+  const percentiles = calcPercentiles(p, players);
+  const radarData = buildRadarData(p, players);
+  const rColor = radarColor(p.position);
+
+  // Range valore ±15%
+  const mvLow  = (p.market_value_m * 0.85).toFixed(1);
+  const mvHigh = (p.market_value_m * 1.15).toFixed(1);
+
+  const posLabel = {FW:'Attaccante',MF:'Centrocampista',DF:'Difensore',GK:'Portiere'}[p.position.split(',')[0]] || p.position;
+  const firstPos = p.position.split(',')[0].trim();
+
+  document.getElementById('main-content').innerHTML = `
+    <a class="back-link fade-up" href="players.html">← Tutti i giocatori</a>
+
+    <!-- HEADER -->
+    <div class="player-header fade-up" style="position:relative">
+      <div>
+        <div class="player-meta-top">
+          <span class="tag" style="background:rgba(255,255,255,0.06);color:${pColor};border-color:rgba(255,255,255,0.1)">${posLabel}</span>
+          <span class="tag">${p.squad}</span>
+          <span style="font-size:12px;color:var(--muted)">${p.nationality} · ${p.born}</span>
+        </div>
+        <div class="player-name">${p.name.toUpperCase()}</div>
+        <div class="player-info">
+          <div class="info-item"><div class="info-label">Età</div><div class="info-val">${p.age} anni</div></div>
+          <div class="info-item"><div class="info-label">Presenze</div><div class="info-val">${p.mp} (${p.starts} da titolare)</div></div>
+          <div class="info-item"><div class="info-label">Minuti</div><div class="info-val">${p.minutes.toLocaleString()}'</div></div>
+          <div class="info-item"><div class="info-label">Stagione</div><div class="info-val">${p.season}</div></div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="mv-val" style="font-size:48px">${fmtM(p.market_value_m)}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:1px">VALORE DI MERCATO</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Range: €${mvLow}M – €${mvHigh}M</div>
+      </div>
+    </div>
+
+    <!-- STAT BLOCKS -->
+    <div class="stat-blocks fade-up-2">
+      <div class="stat-block">
+        <div class="val" style="color:var(--accent2)">${p.goals}</div>
+        <div class="lbl">Goal</div>
+        <div class="sub">${p.goals_pg.toFixed(2)}/90'</div>
+      </div>
+      <div class="stat-block">
+        <div class="val" style="color:var(--accent)">${p.assists}</div>
+        <div class="lbl">Assist</div>
+        <div class="sub">${p.assists_pg.toFixed(2)}/90'</div>
+      </div>
+      <div class="stat-block">
+        <div class="val" style="color:var(--gold)">${p.ga}</div>
+        <div class="lbl">G + A</div>
+        <div class="sub">${p.ga_pg.toFixed(2)}/90'</div>
+      </div>
+      <div class="stat-block">
+        <div class="val">${p.goals_npk}</div>
+        <div class="lbl">Goal (no rig.)</div>
+        <div class="sub">${p.pk} rigori segnati</div>
+      </div>
+      <div class="stat-block">
+        <div class="val">${p.yellowCards}</div>
+        <div class="lbl">Gialli</div>
+        <div class="sub">${p.redCards} rossi</div>
+      </div>
+      <div class="stat-block">
+        <div class="val" style="color:var(--accent)">${p.nineties.toFixed(1)}</div>
+        <div class="lbl">Partite 90'</div>
+        <div class="sub">equiv. interi</div>
+      </div>
+    </div>
+
+    <!-- RADAR + PERCENTILI -->
+    <div class="profile-grid fade-up-3">
+      <div class="panel">
+        <div class="panel-title">📡 Radar Profilo — vs ${firstPos} in lega</div>
+        <div class="panel-body">
+          <div class="radar-wrap">
+            <canvas id="radar-chart" role="img" aria-label="Radar chart profilo ${p.name}"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">📊 Percentili — vs ${firstPos} in lega</div>
+        <div class="panel-body" style="padding-top:20px">
+          ${percentiles.map(row => `
+            <div class="pct-row">
+              <div class="pct-label">${row.label}</div>
+              <div class="pct-track">
+                <div class="pct-fill" style="width:${row.val}%;background:${row.color}"></div>
+              </div>
+              <div class="pct-val" style="color:${row.color}">${row.val}°</div>
+            </div>
+          `).join('')}
+          <div style="margin-top:16px;font-size:11px;color:var(--muted);line-height:1.6">
+            I percentili mostrano la posizione del giocatore rispetto agli altri <strong style="color:var(--text)">${firstPos}</strong> con almeno 3 partite giocate nella stagione 2025-26.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GIOCATORI SIMILI -->
+    <div class="section-title fade-up-4">Giocatori Simili <span>stesso ruolo · vicinanza vettoriale</span></div>
+    <div class="similar-grid fade-up-4">
+      ${similar.map(s => `
+        <a class="similar-card" href="player.html?id=${s.id}">
+          <div class="sim-score">Similarità ${s.similarity}%</div>
+          <div class="sim-name">${s.name}</div>
+          <div class="sim-meta">${s.squad} · ${s.age} anni · ${posBadge(s.position)}</div>
+          <div class="sim-stats">
+            <div class="sim-stat"><div class="v" style="color:var(--accent2)">${s.goals}</div><div class="l">Goal</div></div>
+            <div class="sim-stat"><div class="v" style="color:var(--accent)">${s.assists}</div><div class="l">Assist</div></div>
+            <div class="sim-stat"><div class="v" style="color:var(--gold)">${fmtM(s.market_value_m)}</div><div class="l">Valore</div></div>
+          </div>
+        </a>
+      `).join('')}
+    </div>
+
+    <!-- NOTE ANALISI -->
+    <div class="panel fade-up-4" style="margin-bottom:32px">
+      <div class="panel-title">🧠 Insight Automatico</div>
+      <div class="panel-body" id="insight-box"></div>
+    </div>
+  `;
+
+  // ── Radar Chart ──────────────────────────────────────────
+  setTimeout(() => {
+    const ctx = document.getElementById('radar-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: radarData.labels,
+        datasets: [{
+          label: p.name,
+          data: radarData.data,
+          borderColor: rColor.border,
+          backgroundColor: rColor.bg,
+          borderWidth: 2,
+          pointBackgroundColor: rColor.border,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          r: {
+            min: 0, max: 100,
+            ticks: { display: false },
+            grid: { color: 'rgba(255,255,255,0.07)' },
+            angleLines: { color: 'rgba(255,255,255,0.07)' },
+            pointLabels: {
+              color: '#6b7280',
+              font: { size: 12, family: "'DM Sans', sans-serif", weight: '500' }
+            }
+          }
+        }
+      }
+    });
+  }, 100);
+
+  // ── Insight automatico ────────────────────────────────────
+  const insights = [];
+  const firstPos2 = p.position.split(',')[0].trim();
+  const pool2 = players.filter(x => x.position.includes(firstPos2) && x.nineties >= 3);
+  const avgGpg = pool2.reduce((s,x) => s + x.goals_pg, 0) / pool2.length;
+  const avgApg = pool2.reduce((s,x) => s + x.assists_pg, 0) / pool2.length;
+
+  if (p.goals_pg > avgGpg * 1.5) insights.push(`⚽ <strong>${p.name}</strong> segna <strong style="color:var(--accent2)">${(p.goals_pg/avgGpg).toFixed(1)}x</strong> la media dei ${firstPos2} in lega per goal/90'.`);
+  if (p.assists_pg > avgApg * 1.5) insights.push(`🤝 Eccezionale nei passaggi decisivi: ${(p.assists_pg/avgApg).toFixed(1)}x la media dei ${firstPos2} per assist/90'.`);
+  if (p.age <= 21) insights.push(`🌱 Giocatore <strong>molto giovane</strong> (${p.age} anni): alto potenziale di crescita di valore nei prossimi anni.`);
+  if (p.age >= 34) insights.push(`⏳ Giocatore nella fase finale di carriera (${p.age} anni): valore in rapido declino.`);
+  if (p.pk > 0 && p.goals > 0) {
+    const pkPct = Math.round(p.pk / p.goals * 100);
+    if (pkPct > 30) insights.push(`⚠️ ${pkPct}% dei goal arriva <strong>da rigore</strong> (${p.pk} su ${p.goals}): produzione da campo aperto inferiore al dato lordo.`);
+  }
+  if (p.starts < p.mp * 0.5) insights.push(`🔄 Giocatore prevalentemente da <strong>subentro</strong>: ${p.starts} titolarità su ${p.mp} presenze. Le statistiche per 90' vanno contestualizzate.`);
+  if (p.market_value_m >= 50) insights.push(`💎 Tra i giocatori <strong>più preziosi</strong> della lega con ${fmtM(p.market_value_m)}.`);
+
+  if (!insights.length) insights.push(`📋 Giocatore con profilo nella media per il suo ruolo. Stagione solida con ${p.goals} goal e ${p.assists} assist in ${p.minutes.toLocaleString()}' di gioco.`);
+
+  document.getElementById('insight-box').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${insights.map(txt => `<div style="font-size:14px;line-height:1.7;padding:10px 14px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent)">${txt}</div>`).join('')}
+    </div>
+  `;
+}
+
+init();
+</script>
+</body>
+</html>
