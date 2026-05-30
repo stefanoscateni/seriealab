@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fiorentina: statistiche e analisi | Serie A Analytics Lab</title>
+<meta name="description" content="Analisi completa del Fiorentina in Serie A 2025-26: 40 goal, xG 1.05/90', possesso 51.1%, overperformance e rosa giocatori.">
+<link rel="canonical" href="https://serieaanalyticslab.com/squadre/fiorentina">
+<meta property="og:title" content="Fiorentina: statistiche e analisi | Serie A Analytics Lab">
+<meta property="og:description" content="Analisi completa del Fiorentina in Serie A 2025-26: 40 goal, xG 1.05/90', possesso 51.1%, overperformance e rosa giocatori.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://serieaanalyticslab.com/squadre/fiorentina">
+<meta property="og:site_name" content="Serie A Analytics Lab">
+<meta name="twitter:card" content="summary"><meta name="twitter:title" content="Fiorentina: statistiche e analisi | Serie A Analytics Lab"><meta name="twitter:description" content="Analisi completa del Fiorentina in Serie A 2025-26: 40 goal, xG 1.05/90', possesso 51.1%, overperformance e rosa giocatori.">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SportsTeam", "name": "Fiorentina", "sport": "Soccer", "memberOf": {"@type": "SportsOrganization", "name": "Serie A"}, "url": "https://serieaanalyticslab.com/squadre/fiorentina"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://serieaanalyticslab.com/"}, {"@type": "ListItem", "position": 2, "name": "Squadre", "item": "https://serieaanalyticslab.com/squadre/"}, {"@type": "ListItem", "position": 3, "name": "Fiorentina", "item": "https://serieaanalyticslab.com/squadre/fiorentina"}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" defer></script>
+<style>@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{--bg:#080a0f;--bg2:#0f1218;--bg3:#161b24;--bg4:#1e2430;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);--text:#e2e8f0;--muted:#64748b;--faint:#334155;--green:#10b981;--orange:#f97316;--gold:#f59e0b;--red:#ef4444;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;--r:10px;--r2:16px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:14px;line-height:1.6;min-height:100vh}
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(8,10,15,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--display);font-size:20px;letter-spacing:1px;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;background:var(--green);border-radius:50%;flex-shrink:0}
+.nav-links{display:flex;gap:2px}
+.nav-links a{color:var(--muted);font-size:13px;font-weight:500;padding:7px 16px;border-radius:8px;transition:all .15s;text-decoration:none}
+.nav-links a:hover{color:var(--text);background:var(--bg3)}.nav-links a.active{color:var(--green);background:rgba(16,185,129,0.08)}
+.page{max-width:1200px;margin:0 auto;padding:36px 28px 80px}
+.hero{padding:44px 0 36px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.hero-eye{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.hero-title{font-family:var(--display);font-size:clamp(48px,7vw,88px);line-height:.95;letter-spacing:1px}
+.hero-title em{color:var(--green);font-style:normal}
+.hero-sub{margin-top:14px;color:var(--muted);font-size:15px;max-width:500px;font-weight:300}
+.sh{display:flex;align-items:baseline;gap:10px;margin-bottom:18px}
+.sh-title{font-family:var(--display);font-size:28px;letter-spacing:.5px}
+.sh-sub{font-size:12px;color:var(--muted);font-weight:500}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:32px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;transition:border-color .2s}
+.kpi:hover{border-color:var(--border2)}.kpi-lbl{font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-val{font-family:var(--display);font-size:38px;line-height:1}.kpi-val.g{color:var(--green)}.kpi-val.gold{color:var(--gold)}.kpi-sub{font-size:11px;color:var(--faint);margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.panel-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.panel-body{padding:18px 20px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}.bar-row:last-child{margin-bottom:0}
+.bar-lbl{font-size:12px;min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}.bar-fill{height:100%;border-radius:3px}.bar-val{font-size:12px;font-weight:600;min-width:36px;text-align:right}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:28px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px 20px;position:relative;overflow:hidden;transition:all .2s;text-decoration:none;display:block;color:var(--text)}
+.card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--green);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.card:hover{border-color:var(--border2);transform:translateY(-2px)}.card:hover::after{transform:scaleX(1)}
+.card-num{font-family:var(--display);font-size:56px;color:var(--border2);position:absolute;top:8px;right:14px;line-height:1}
+.card-name{font-weight:600;font-size:15px;margin-bottom:3px;padding-right:50px}.card-meta{font-size:12px;color:var(--muted);margin-bottom:14px}
+.card-stats{display:flex;gap:18px}.cs-val{font-family:var(--display);font-size:24px;line-height:1}.cs-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
+.badge-fw{background:rgba(249,115,22,.12);color:var(--orange)}.badge-mf{background:rgba(16,185,129,.1);color:var(--green)}.badge-df{background:rgba(245,158,11,.1);color:var(--gold)}.badge-gk{background:rgba(100,116,139,.12);color:var(--muted)}
+.tbl-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-bottom:28px}
+.tbl-top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.tbl-top-title{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.tbl-controls{display:flex;gap:8px;flex-wrap:wrap}
+.srch{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px 12px;font-size:13px;outline:none;transition:border-color .15s}
+.srch:focus{border-color:var(--green)}.srch::placeholder{color:var(--muted)}.tbl-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:9px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+th:hover{color:var(--text)}.si{opacity:.35;margin-left:2px;font-size:10px}.sorted .si{opacity:1;color:var(--green)}
+td{padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px;white-space:nowrap;vertical-align:middle}
+tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)}
+.td-rk{color:var(--faint);font-size:12px;width:32px}.td-name{font-weight:600}.td-muted{color:var(--muted)}.td-green{color:var(--green);font-weight:600}.td-gold{color:var(--gold);font-family:var(--display);font-size:16px}.td-orange{color:var(--orange)}
+.fp-group{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.fp{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.fp:hover{color:var(--text);border-color:var(--border2)}.fp.on{color:var(--green);background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.25)}
+.count-bar{padding:10px 20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
+.chart-wrap{position:relative;height:280px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid}
+.pill-up{color:var(--green);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)}
+.pill-dn{color:var(--red);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.08)}
+.pill-eq{color:var(--muted);border-color:var(--border)}
+footer{border-top:1px solid var(--border);padding:22px 28px;text-align:center;font-size:12px;color:var(--faint)}
+footer a{color:var(--muted);text-decoration:none;margin:0 8px}footer a:hover{color:var(--green)}footer span{color:var(--green)}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.ph{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.pname{font-family:var(--display);font-size:clamp(36px,5.5vw,68px);line-height:.95;letter-spacing:1px;margin-bottom:10px}
+.ptags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pinfo{display:flex;gap:20px;flex-wrap:wrap}
+.pi .pil{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}.pi .piv{font-size:14px;font-weight:500}
+.pmv{text-align:right}.mv-n{font-family:var(--display);font-size:50px;color:var(--gold);line-height:1}
+.mv-l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}.mv-r{font-size:12px;color:var(--muted);margin-top:2px}
+.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:28px}
+.sb{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;text-align:center;transition:border-color .2s}
+.sb:hover{border-color:var(--border2)}.sb .v{font-family:var(--display);font-size:36px;line-height:1;margin-bottom:3px}.sb .l{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}.sb .s{font-size:11px;color:var(--faint);margin-top:2px}
+.pr{display:flex;align-items:center;gap:12px;margin-bottom:14px}.pl{font-size:12px;color:var(--muted);min-width:110px}
+.pt{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}.pf{height:100%;border-radius:3px}
+.pn2{font-size:12px;font-weight:700;min-width:34px;text-align:right}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:28px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px;text-decoration:none;color:var(--text);display:block;transition:all .2s}
+.sc:hover{border-color:var(--green);transform:translateY(-2px)}
+.sc .sp{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.sc .sn{font-weight:700;font-size:14px;margin-bottom:2px}.sc .sm{font-size:11px;color:var(--muted);margin-bottom:10px}
+.sc .ss{display:flex;gap:14px}.sc .sv .v{font-family:var(--display);font-size:20px;line-height:1}.sc .sv .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.ins{padding:11px 14px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--green);font-size:13px;line-height:1.65;margin-bottom:8px}.ins:last-child{margin-bottom:0}
+.radar-wrap{position:relative;height:260px}
+.tm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:28px}
+.tm-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;text-decoration:none;color:var(--text);display:flex;align-items:center;justify-content:space-between;transition:all .15s}
+.tm-card:hover{border-color:var(--green);color:var(--green)}.tm-card .tn{font-size:13px;font-weight:500}.tm-card .tg{font-size:12px;color:var(--muted)}
+.bc{font-size:12px;color:var(--muted);margin-bottom:20px}.bc a{color:var(--muted);text-decoration:none}.bc span{margin:0 6px}
+.scout-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.sf-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.range-row{display:flex;align-items:center;gap:10px}.range-row input[type=range]{flex:1;accent-color:var(--green)}.range-val{font-size:12px;font-weight:600;color:var(--green);min-width:44px;text-align:right}
+.fit-bar{display:flex;align-items:center;gap:6px}.fit-track{width:56px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}.fit-fill{height:100%;border-radius:2px;background:var(--green)}.fit-num{font-size:12px;font-weight:700;color:var(--green);min-width:24px}
+@media(max-width:700px){.two{grid-template-columns:1fr}.page{padding:20px 16px 60px}.hero-title{font-size:52px}.kpi-strip{grid-template-columns:repeat(2,1fr)}td,th{padding:8px 10px}.ph{grid-template-columns:1fr}.pmv{text-align:left}.nav-links a{padding:6px 10px;font-size:12px}}</style>
+</head><body><nav><a class="logo" href="/"><div class="logo-dot"></div>SERIE A LAB</a><div class="nav-links"><a href="/">Home</a><a href="/squadre/" class="active">Squadre</a><a href="/giocatori/">Giocatori</a><a href="/scout/">Scout</a></div></nav>
+<div class="page">
+  <div class="bc"><a href="/">Home</a><span>›</span><a href="/squadre/">Squadre</a><span>›</span><span style="color:var(--text)">Fiorentina</span></div>
+
+  <div class="hero">
+    <div class="hero-eye">Stagione 2025-26 · Serie A</div>
+    <h1 class="hero-title"><em>FIORENTINA</em></h1>
+    <p class="hero-sub">Analisi statistica completa: goal, xG, possesso e performance dei giocatori in Serie A 2025-26.</p>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-lbl">Goal Segnati</div><div class="kpi-val g">40</div><div class="kpi-sub">1.05/partita</div></div>
+    <div class="kpi"><div class="kpi-lbl">Assist</div><div class="kpi-val">23</div><div class="kpi-sub">stagione intera</div></div>
+    <div class="kpi"><div class="kpi-lbl">xG / 90'</div><div class="kpi-val" style="color:var(--orange)">1.05</div><div class="kpi-sub">expected goals</div></div>
+    <div class="kpi"><div class="kpi-lbl">Possesso</div><div class="kpi-val">51.1%</div><div class="kpi-sub">media stagione</div></div>
+    <div class="kpi"><div class="kpi-lbl">Tiri Totali</div><div class="kpi-val">63</div><div class="kpi-sub">34 in porta</div></div>
+    <div class="kpi"><div class="kpi-lbl">Overperf xG</div><div class="kpi-val" style="font-size:28px;font-family:var(--body);font-weight:700;color:var(--muted)">0.0</div><div class="kpi-sub">goal/90 - xG/90</div></div>
+  </div>
+
+  <div class="two">
+    <div class="panel">
+      <div class="panel-head">Marcatori — clicca per il profilo</div>
+      <div class="panel-body"><div class="bar-row"><a class="bar-lbl" href="/giocatori/moise-kean" style="color:var(--text);text-decoration:none;font-weight:600">Moise Kean</a><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">8</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/rolando-mandragora" style="color:var(--text);text-decoration:none;font-weight:600">Rolando Mandragora</a><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">7</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/albert-gudmundsson" style="color:var(--text);text-decoration:none;font-weight:600">Albert Gudmundsson</a><div class="bar-track"><div class="bar-fill" style="width:62%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">5</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/nicolo-fagioli" style="color:var(--text);text-decoration:none;font-weight:400">Nicolo Fagioli</a><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">2</div></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">Assistman — clicca per il profilo</div>
+      <div class="panel-body"><div class="bar-row"><a class="bar-lbl" href="/giocatori/albert-gudmundsson" style="color:var(--text);text-decoration:none;font-weight:600">Albert Gudmundsson</a><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--orange)"></div></div><div class="bar-val" style="color:var(--orange)">4</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/rolando-mandragora" style="color:var(--text);text-decoration:none;font-weight:600">Rolando Mandragora</a><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--orange)"></div></div><div class="bar-val" style="color:var(--orange)">3</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/nicolo-fagioli" style="color:var(--text);text-decoration:none;font-weight:600">Nicolo Fagioli</a><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--orange)"></div></div><div class="bar-val" style="color:var(--orange)">3</div></div><div class="bar-row"><a class="bar-lbl" href="/giocatori/moise-kean" style="color:var(--text);text-decoration:none;font-weight:400">Moise Kean</a><div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--orange)"></div></div><div class="bar-val" style="color:var(--orange)">1</div></div></div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="sh-title">Statistiche avanzate</div></div>
+  <div class="panel" style="margin-bottom:28px">
+    <div class="panel-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Attacco</div>
+          <div class="bar-row"><a class="bar-lbl" href="/giocatori/" style="color:var(--text);text-decoration:none;font-weight:600">npxG/90</a><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">0.89</div></div>
+          <div class="bar-row"><div class="bar-lbl" style="color:var(--text)">npxG totale</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--green)"></div></div><div class="bar-val" style="color:var(--green)">1.5</div></div>
+          <div class="bar-row"><div class="bar-lbl" style="color:var(--text)">Tiri in porta/90</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--orange)"></div></div><div class="bar-val" style="color:var(--orange)">0.89</div></div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Disciplina</div>
+          <div class="bar-row"><div class="bar-lbl" style="color:var(--text)">Cartellini gialli</div><div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--gold)"></div></div><div class="bar-val" style="color:var(--gold)">82</div></div>
+          <div class="bar-row"><div class="bar-lbl" style="color:var(--text)">Fuorigioco</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--muted)"></div></div><div class="bar-val" style="color:var(--muted)">3</div></div>
+          <div class="bar-row"><div class="bar-lbl" style="color:var(--text)">Età media rosa</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--blue if False else "var(--muted)")"></div></div><div class="bar-val">26.8</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sh"><div class="sh-title">Rosa nel Database</div><div class="sh-sub">4 giocatori · valore totale €69M · clicca per il profilo</div></div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Giocatore</th><th>Ruolo</th><th>Età</th>
+          <th>G</th><th>A</th><th>G/90</th><th>A/90</th><th>Min</th><th>Valore</th>
+        </tr></thead>
+        <tbody><tr><td class="td-rk">1</td><td class="td-name"><a href="/giocatori/rolando-mandragora" style="color:var(--text);text-decoration:none;font-weight:600">Rolando Mandragora</a></td><td><span class="badge badge-mf">MF</span></td><td>28</td><td><strong style="color:var(--green)">7</strong></td><td>3</td><td class="td-green">0.26</td><td>0.11</td><td class="td-muted">2,421'</td><td class="td-gold">€16.0M</td></tr><tr><td class="td-rk">2</td><td class="td-name"><a href="/giocatori/albert-gudmundsson" style="color:var(--text);text-decoration:none;font-weight:600">Albert Gudmundsson</a></td><td><span class="badge badge-fw">FW</span></td><td>28</td><td><strong style="color:var(--green)">5</strong></td><td>4</td><td class="td-green">0.20</td><td>0.16</td><td class="td-muted">2,250'</td><td class="td-gold">€20.0M</td></tr><tr><td class="td-rk">3</td><td class="td-name"><a href="/giocatori/moise-kean" style="color:var(--text);text-decoration:none;font-weight:600">Moise Kean</a></td><td><span class="badge badge-fw">FW</span></td><td>25</td><td><strong style="color:var(--green)">8</strong></td><td>1</td><td class="td-green">0.35</td><td>0.04</td><td class="td-muted">2,036'</td><td class="td-gold">€24.0M</td></tr><tr><td class="td-rk">4</td><td class="td-name"><a href="/giocatori/nicolo-fagioli" style="color:var(--text);text-decoration:none;font-weight:600">Nicolo Fagioli</a></td><td><span class="badge badge-mf">MF</span></td><td>24</td><td><strong style="color:var(--green)">2</strong></td><td>3</td><td class="td-green">0.07</td><td>0.11</td><td class="td-muted">2,554'</td><td class="td-gold">€9.0M</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sh"><div class="sh-title">Altre Squadre</div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px"><a href="/squadre/inter" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Inter</a><a href="/squadre/como" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Como</a><a href="/squadre/juventus" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Juventus</a><a href="/squadre/roma" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Roma</a><a href="/squadre/napoli" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Napoli</a><a href="/squadre/milan" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Milan</a><a href="/squadre/atalanta" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Atalanta</a><a href="/squadre/bologna" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Bologna</a><a href="/squadre/sassuolo" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Sassuolo</a><a href="/squadre/udinese" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Udinese</a><a href="/squadre/torino" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Torino</a><a href="/squadre/genoa" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Genoa</a><a href="/squadre/cagliari" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Cagliari</a><a href="/squadre/lazio" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Lazio</a><a href="/squadre/cremonese" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Cremonese</a><a href="/squadre/lecce" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Lecce</a><a href="/squadre/parma" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Parma</a><a href="/squadre/pisa" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Pisa</a><a href="/squadre/hellas-verona" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:500;transition:all .15s" onmouseover="this.style.color='var(--green)';this.style.borderColor='rgba(16,185,129,.3)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Hellas Verona</a></div>
+</div>
+<footer><span>Serie A Analytics Lab</span> · <a href="/">Home</a><a href="/squadre/">Squadre</a><a href="/giocatori/">Giocatori</a><a href="/scout/">Scout</a><a href="/sitemap.xml">Sitemap</a></footer>
+</body></html>
